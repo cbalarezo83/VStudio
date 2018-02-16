@@ -7,8 +7,11 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
-import { QuizListComponent } from './components/quiz/quiz-list.component';
+
 import { QuizComponent } from './components/quiz/quiz.component';
+import { QuizListComponent } from './components/quiz/quiz-list.component';
+import { QuizEditComponent } from './components/quiz/quiz-edit.component';
+
 
 import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login.component';
@@ -21,11 +24,10 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
     declarations: [
         AppComponent,
         NavMenuComponent,
-        //CounterComponent,
-        //FetchDataComponent,
         HomeComponent,
-        QuizListComponent,
         QuizComponent,
+        QuizListComponent,
+        QuizEditComponent,
         AboutComponent,
         LoginComponent,
         PageNotFoundComponent
@@ -36,15 +38,28 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
         FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
+
             { path: 'home', component: HomeComponent },
             { path: 'about', component: AboutComponent },
             { path: 'login', component: LoginComponent },
+            { path: 'quiz/create', component: QuizEditComponent },
             { path: 'quiz/:id', component: QuizComponent },
-            //{ path: 'fetch-data', component: FetchDataComponent },
-            //{ path: '**', redirectTo: 'home' }
+            { path: 'quiz/edit/:id', component: QuizEditComponent },
             { path: '**', component : PageNotFoundComponent }
         ])
     ]
 })
 export class AppModuleShared {
 }
+
+        //CounterComponent,
+        //FetchDataComponent,
+        //QuizListComponent,
+        //QuizEditComponent,
+
+
+
+            //{ path: 'fetch-data', component: FetchDataComponent },
+            //{ path: '**', redirectTo: 'home' }
+            //{ path: 'quiz/create', component: QuizEditComponent },
+            //{ path: 'quiz/edit/:id', component: QuizEditComponent },

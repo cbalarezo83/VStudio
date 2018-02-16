@@ -8,63 +8,87 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Microsoft.EntityFrameworkCore;
+using TestMakerFreeWebApp.Data;
+
 namespace TestMakerFreeWebApp
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc();
-        }
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddMvc();
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true
-                });
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+			//Add Entity Framework Support for SQL Server
+			services.AddEntityFrameworkSqlServer();
 
-            app.UseStaticFiles(
-                new StaticFileOptions()
-                {
-                    OnPrepareResponse = (context) =>
-                    {
-                        context.Context.Response.Headers["Cache-Control"] = Configuration["StaticFiles:Headers:Cache-Control"];
-                        context.Context.Response.Headers["Pragma"] = Configuration["StaticFiles:Headers:Pragma"];
-                        context.Context.Response.Headers["Expires"] = Configuration["StaticFiles:Headers:Expires"];
-                    }
-                }
-            );
+			//Add ApplicationDBContext
+			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //app.UseStaticFiles();
+		}
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+				{
+					HotModuleReplacement = true
+				});
+			}
+			else
+			{
+				app.UseExceptionHandler("/Home/Error");
+			}
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
-            });
-        }
-    }
+			//app.UseStaticFiles();
+
+			app.UseStaticFiles(
+				new StaticFileOptions()
+				{
+					OnPrepareResponse = (context) =>
+					{
+						context.Context.Response.Headers["Cache-Control"] = Configuration["StaticFiles:Headers:Cache-Control"];
+						context.Context.Response.Headers["Pragma"] = Configuration["StaticFiles:Headers:Pragma"];
+						context.Context.Response.Headers["Expires"] = Configuration["StaticFiles:Headers:Expires"];
+					}
+				}
+			);
+
+			
+
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(
+					name: "default",
+					template: "{controller=Home}/{action=Index}/{id?}");
+
+				routes.MapSpaFallbackRoute(
+					name: "spa-fallback",
+					defaults: new { controller = "Home", action = "Index" });
+			});
+
+
+			// Create a service scope to get an ApplicationDbContext instance using DI
+
+			using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+			{
+				var dbContext =serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+
+				dbContext.Database.Migrate();
+
+				DbSeeder.Seed(dbContext);
+			}
+		}
+	}
 }

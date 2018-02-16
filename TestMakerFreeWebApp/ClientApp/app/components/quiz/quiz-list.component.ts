@@ -29,7 +29,7 @@ export class QuizListComponent  implements OnInit{
 
         //this.title = "Latest Quizzes";
         var url = this.baseUrl + "api/quiz/";
-        debugger;
+
         switch (this.class) {
             case "latest":
             default:
