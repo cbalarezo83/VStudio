@@ -11,6 +11,7 @@
     <PackageReference Include="Mapster" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,15 +31,39 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\about\about.component.ts" />
+    <None Remove="ClientApp\app\components\answer\answer-list.component.css" />
+    <None Remove="ClientApp\app\components\answer\answer-list.component.html" />
+    <None Remove="ClientApp\app\components\answer\answer-list.component.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
     <None Remove="ClientApp\app\components\pagenotfound\pagenotfound.component.ts" />
+    <None Remove="ClientApp\app\components\question\question-edit.component.css" />
+    <None Remove="ClientApp\app\components\question\question-edit.component.html" />
+    <None Remove="ClientApp\app\components\question\question-edit.component.ts" />
+    <None Remove="ClientApp\app\components\question\question-list.component.css" />
+    <None Remove="ClientApp\app\components\question\question-list.component.html" />
+    <None Remove="ClientApp\app\components\question\question-list.component.ts" />
+    <None Remove="ClientApp\app\interfaces\answer.ts" />
+    <None Remove="ClientApp\app\interfaces\question.ts" />
     <None Remove="ClientApp\app\interfaces\quiz.ts" />
+    <None Remove="ClientApp\app\interfaces\result.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\about\about.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\answer\answer-list.component.html" />
+    <TypeScriptCompile Include="ClientApp\app\components\answer\answer-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\answer\answer-list.component.css" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\pagenotfound\pagenotfound.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-edit.component.html" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-edit.component.css" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-list.component.html" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-list.component.css" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-edit.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\interfaces\result.ts" />
+    <TypeScriptCompile Include="ClientApp\app\interfaces\answer.ts" />
+    <TypeScriptCompile Include="ClientApp\app\interfaces\question.ts" />
     <TypeScriptCompile Include="ClientApp\app\interfaces\quiz.ts" />
   </ItemGroup>
 

@@ -12,6 +12,10 @@ import { QuizComponent } from './components/quiz/quiz.component';
 import { QuizListComponent } from './components/quiz/quiz-list.component';
 import { QuizEditComponent } from './components/quiz/quiz-edit.component';
 
+import { QuestionListComponent } from './components/question/question-list.component';
+import { QuestionEditComponent } from './components/question/question-edit.component';
+
+import { AnswerListComponent } from './components/answer/answer-list.component';
 
 import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login.component';
@@ -28,6 +32,9 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
         QuizComponent,
         QuizListComponent,
         QuizEditComponent,
+        QuestionListComponent,
+        QuestionEditComponent,
+        AnswerListComponent,
         AboutComponent,
         LoginComponent,
         PageNotFoundComponent
@@ -40,11 +47,19 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
             { path: '', redirectTo: 'home', pathMatch: 'full' },
 
             { path: 'home', component: HomeComponent },
-            { path: 'about', component: AboutComponent },
             { path: 'login', component: LoginComponent },
+
             { path: 'quiz/create', component: QuizEditComponent },
+
             { path: 'quiz/:id', component: QuizComponent },
             { path: 'quiz/edit/:id', component: QuizEditComponent },
+
+
+            { path: 'question/:id', component: QuestionListComponent },
+            { path: 'question/create/:id', component: QuestionEditComponent },
+            { path: 'question/edit/:id', component: QuestionEditComponent },
+
+            { path: 'about', component: AboutComponent },
             { path: '**', component : PageNotFoundComponent }
         ])
     ]

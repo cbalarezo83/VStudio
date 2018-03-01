@@ -23,9 +23,7 @@ export class QuizListComponent  implements OnInit{
 
     ngOnInit() {
 
-        console.log("QuizListComponent " +
-            " instantiated with the following class: "
-            + this.class);
+        console.log("QuizListComponent instantiated with the following class: "+ this.class);
 
         //this.title = "Latest Quizzes";
         var url = this.baseUrl + "api/quiz/";

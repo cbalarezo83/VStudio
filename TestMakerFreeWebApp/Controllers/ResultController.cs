@@ -7,22 +7,32 @@ using TestMakerFreeWebApp.ViewModels;
 using Newtonsoft.Json;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
+using TestMakerFreeWebApp.Data.Models;
+using TestMakerFreeWebApp.Data;
+using Mapster;
+
 namespace TestMakerFreeWebApp.Controllers
 {
-    [Route("api/[controller]")]
-    public class ResultController : Controller
+    public class ResultController : BaseApiController
     {
-
-        #region RESTful conventions methods 
-        /// <summary> 
-        /// Retrieves the Result with the given {id} 
-        /// </summary> 
-        /// &lt;param name="id">The ID of an existing Result</param> 
-        /// <returns>the Result with the given {id}</returns> 
-        [HttpGet("{id}")]
+		#region Constructor
+		public ResultController(ApplicationDbContext context) : base(context) { }
+		#endregion	
+		#region RESTful conventions methods 
+		/// <summary> 
+		/// Retrieves the Result with the given {id} 
+		/// </summary> 
+		/// &lt;param name="id">The ID of an existing Result</param> 
+		/// <returns>the Result with the given {id}</returns> 
+		[HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Content("Not implemented (yet)!");
+			var result = DbContext.Results.Where(w => w.Id == id).FirstOrDefault();
+
+			if (result == null) {
+				return NotFound(new { Error = String.Format("Result ID {0} has not been found", id)});
+			}
+			return new JsonResult(result.Adapt<ResultViewModel>(),JsonSettings);
         }
 
         /// <summary> 
@@ -30,9 +40,21 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="m">The ResultViewModel containing the data to insert</param> 
         [HttpPut]
-        public IActionResult Put(ResultViewModel m)
+        public IActionResult Put([FromBody]ResultViewModel model)
         {
-            throw new NotImplementedException();
+			if (model == null) return new StatusCodeResult(500);
+
+			var result = model.Adapt<Result>();
+
+			// override those properties 
+			// that should be set from the server-side only
+			result.CreatedDate = DateTime.Now;
+			result.LastModifiedDate = result.CreatedDate;
+
+			DbContext.Results.Add(result);
+			DbContext.SaveChanges();
+
+			return new JsonResult(result.Adapt<ResultViewModel>(), JsonSettings);
         }
 
         /// <summary> 
@@ -40,10 +62,27 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="m">The ResultViewModel containing the data to update</param> 
         [HttpPost]
-        public IActionResult Post(ResultViewModel m)
+        public IActionResult Post([FromBody] ResultViewModel model)
         {
-            throw new NotImplementedException();
-        }
+			if (model == null) return new StatusCodeResult(500);
+
+			var result = DbContext.Results.Where(w => w.Id == model.Id).FirstOrDefault();
+
+			if (result == null) {
+				return NotFound(new { Error = String.Format("Result ID{0} has not been found", model.Id) });
+			}
+
+
+			result.QuizId = model.QuizId;
+			result.Text = model.Text;
+			result.MinValue = model.MinValue;
+			result.MaxValue = model.MaxValue;
+			result.Notes = model.Notes;
+
+			DbContext.SaveChanges();
+
+			return new JsonResult(result.Adapt<ResultViewModel>(), JsonSettings);
+		}
 
         /// <summary> 
         /// Deletes the Result with the given {id} from the Database 
@@ -52,8 +91,18 @@ namespace TestMakerFreeWebApp.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            throw new NotImplementedException();
-        }
+			var result = DbContext.Results.Where(w => w.Id == id).FirstOrDefault();
+
+			if (result == null)
+			{
+				return NotFound(new { Error = String.Format("Result ID{0} has not been found", id) });
+			}
+
+			DbContext.Results.Remove(result);
+			DbContext.SaveChanges();
+
+			return new OkResult();
+		}
         #endregion
 
 
@@ -61,38 +110,39 @@ namespace TestMakerFreeWebApp.Controllers
         [HttpGet("All/{quizId}")]
         public IActionResult All(int quizId)
         {
-            var sampleResults = new List<ResultViewModel>();
 
-            // add a first sample result 
-            sampleResults.Add(new ResultViewModel()
-            {
-                Id = 1,
-                QuizId = quizId,
-                Text = "What do you value most in your life?",
-                CreatedDate = DateTime.Now,
-                LastModifiedDate = DateTime.Now
-            });
+			var results = DbContext.Results.Where(w => w.QuizId == quizId).ToArray();
 
-            // add a bunch of other sample results 
-            for (int i = 2; i <= 5; i++)
-            {
-                sampleResults.Add(new ResultViewModel()
-                {
-                    Id = i,
-                    QuizId = quizId,
-                    Text = String.Format("Sample Question {0}", i),
-                    CreatedDate = DateTime.Now,
-                    LastModifiedDate = DateTime.Now
-                });
-            }
+			// output the result in JSON format 
+			return new JsonResult(results.Adapt<ResultViewModel>(), JsonSettings);
 
-            // output the result in JSON format 
-            return new JsonResult(
-                sampleResults,
-                new JsonSerializerSettings()
-                {
-                    Formatting = Formatting.Indented
-                });
-        }
-    }
+
+			//var sampleResults = new List<ResultViewModel>();
+
+			//add a first sample result
+
+			//sampleResults.Add(new ResultViewModel()
+			//{
+			//	Id = 1,
+			//	QuizId = quizId,
+			//	Text = "What do you value most in your life?",
+			//	CreatedDate = DateTime.Now,
+			//	LastModifiedDate = DateTime.Now
+			//});
+
+			//add a bunch of other sample results
+
+			//for (int i = 2; i <= 5; i++)
+			//{
+			//	sampleResults.Add(new ResultViewModel()
+			//	{
+			//		Id = i,
+			//		QuizId = quizId,
+			//		Text = String.Format("Sample Question {0}", i),
+			//		CreatedDate = DateTime.Now,
+			//		LastModifiedDate = DateTime.Now
+			//	});
+			//}
+		}
+	}
 }
