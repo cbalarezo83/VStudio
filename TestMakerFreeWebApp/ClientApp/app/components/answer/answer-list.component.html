@@ -1,6 +1,6 @@
 ﻿<h3>Answers</h3>
 
-<div *ngIf="answer.length > 0 ">
+<div *ngIf="answers.length > 0 ">
     <table class="answers">
         <thead>
             <tr>
@@ -11,8 +11,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let answer of answers">
-                <td>{{answers.Text}}</td>
-                <td>{{answers.Value}}</td>
+                <td>{{answer.Text}}</td>
+                <td>{{answer.Value}}</td>
                 <td>
                     <input type="button" value="Edit" (click)="onEdit(answer)" />
                     <input type="button" value="Delete" (click)="onDelete(answer)" />

@@ -114,7 +114,7 @@ namespace TestMakerFreeWebApp.Controllers
 			var results = DbContext.Results.Where(w => w.QuizId == quizId).ToArray();
 
 			// output the result in JSON format 
-			return new JsonResult(results.Adapt<ResultViewModel>(), JsonSettings);
+			return new JsonResult(results.Adapt<ResultViewModel[]>(), JsonSettings);
 
 
 			//var sampleResults = new List<ResultViewModel>();

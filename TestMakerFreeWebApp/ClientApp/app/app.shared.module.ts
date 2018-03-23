@@ -16,6 +16,10 @@ import { QuestionListComponent } from './components/question/question-list.compo
 import { QuestionEditComponent } from './components/question/question-edit.component';
 
 import { AnswerListComponent } from './components/answer/answer-list.component';
+import { AnswerEditComponent } from './components/answer/answer-edit.component';
+
+import { ResultListComponent } from './components/result/result-list.component';
+import { ResultEditComponent } from './components/result/result-edit.component';
 
 import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login.component';
@@ -23,6 +27,7 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
 
 //import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 //import { CounterComponent } from './components/counter/counter.component';
+        //AnswerEditComponent,
 
 @NgModule({
     declarations: [
@@ -35,6 +40,9 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
         QuestionListComponent,
         QuestionEditComponent,
         AnswerListComponent,
+        AnswerEditComponent,
+        ResultListComponent,
+        ResultEditComponent,
         AboutComponent,
         LoginComponent,
         PageNotFoundComponent
@@ -49,15 +57,21 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
             { path: 'home', component: HomeComponent },
             { path: 'login', component: LoginComponent },
 
-            { path: 'quiz/create', component: QuizEditComponent },
-
             { path: 'quiz/:id', component: QuizComponent },
+            { path: 'quiz/create', component: QuizEditComponent },
             { path: 'quiz/edit/:id', component: QuizEditComponent },
 
 
             { path: 'question/:id', component: QuestionListComponent },
             { path: 'question/create/:id', component: QuestionEditComponent },
             { path: 'question/edit/:id', component: QuestionEditComponent },
+
+            { path: 'answer/:id', component: AnswerListComponent },
+            { path: 'answer/create/:id', component: AnswerEditComponent },
+            { path: 'answer/edit/:id', component: AnswerEditComponent },
+
+            { path: 'result/create/:id', component: ResultEditComponent },
+            { path: 'result/edit/:id', component: ResultEditComponent  },
 
             { path: 'about', component: AboutComponent },
             { path: '**', component : PageNotFoundComponent }

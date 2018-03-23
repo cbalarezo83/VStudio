@@ -23,4 +23,6 @@
 
     <question-list [quiz] ="quiz" *ngIf="editMode"></question-list>
 
+    <result-list *ngIf="editMode" [quiz] ="quiz"></result-list>
+
 </div>
