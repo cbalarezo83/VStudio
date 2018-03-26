@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
+import { QuizSearchComponent } from './components/quiz/quiz-search.component';
+
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 
@@ -32,6 +34,7 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
 @NgModule({
     declarations: [
         AppComponent,
+        QuizSearchComponent,
         NavMenuComponent,
         HomeComponent,
         QuizComponent,

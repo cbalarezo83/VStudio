@@ -1,17 +1,17 @@
-.answer-edit {
+.question-edit {
   width: 80%;
 }
 @media (max-width: 767px) {
-  .answer-edit {
+  .question-edit {
     width: 100%;
   }
 }
-.answer-edit textarea {
+.question-edit textarea {
   min-height: 100px;
 }
-.answer-edit select {
+.question-edit select {
   max-width: 200px;
 }
-.answer-edit .commands {
+.question-edit .commands {
   margin-top: 20px;
 }

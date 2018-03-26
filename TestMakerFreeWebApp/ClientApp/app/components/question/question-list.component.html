@@ -1,27 +1,40 @@
 ﻿<h3>Questions</h3>
 
 <div *ngIf="questions.length > 0 ">
-    <table class="questions">
-        <thead>
-            <tr>
-                <th>Text</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let question of questions">
-                <td>{{question.Text}}</td>
-                <td>
-                    <input type="button" value="Edit" (click)="onEdit(question)" />
-                    <input type="button" value="Delete" (click)="onDelete(question)" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped" >
+            <thead>
+                <tr>
+                    <th>Text</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let question of questions">
+                    <td>{{question.Text}}</td>
+                    <td>
+                        <button (click)="onEdit(question)" class="btn btn-xs btn-warning">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            &nbsp; Edit
+                        </button>
+                     </td>
+                    <td>
+                        <button (click)="onDelete(question)" class="btn btn-xs btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            &nbsp; Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div *ngIf="questions.length==0">
     This quiz haz no questions(yet) :
     click the <strong>Add a new Question </strong> button to add the first one !
 </div>
-<input type="button" value="Add a new Question" (click) ="onCreate()" />
+<button (click) ="onCreate()"  class="btn btn-sm btn-primary" >
+    <span class="glyphicon glyphicon-plus"></span>
+    Add a new question
+ </button>

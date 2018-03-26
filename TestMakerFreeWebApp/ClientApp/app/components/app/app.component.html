@@ -1,4 +1,17 @@
 <div class='container-fluid'>
+    <div class="row">
+        <div class="navbar header-content">
+            <nav class="container-fluid">
+                <div class="navbar-header">
+                    <a [routerLink]="['/home']">
+                        <img src="/dist/res/img/logo.svg"
+                             alt="TestMakerFree" />
+                    </a>
+                </div>
+                <quiz-search class="search-header" prefix="Search for a quiz..."></quiz-search>
+            </nav>
+        </div>
+    </div>
     <div class='row'>
         <div class='col-sm-3'>
             <nav-menu></nav-menu>
