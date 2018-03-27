@@ -9,6 +9,9 @@ using TestMakerFreeWebApp.Data;
 using TestMakerFreeWebApp.Data.Models;
 using Mapster;
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TestMakerFreeWebApp.Controllers
@@ -16,16 +19,19 @@ namespace TestMakerFreeWebApp.Controllers
     public class AnswerController : BaseApiController
     {
 		#region Constructors
-			public AnswerController(ApplicationDbContext context):base(context){}
-		#endregion	
+			public AnswerController(ApplicationDbContext context,
+                                        RoleManager<IdentityRole> roleManager,
+                                        UserManager<ApplicationUser> userManager,
+                                        IConfiguration configuration) : base(context, roleManager, userManager, configuration) { }
+        #endregion
 
-		#region RESTful conventions methods 
-		/// <summary> 
-		/// Retrieves the Answer with the given {id} 
-		/// </summary> 
-		/// &lt;param name="id">The ID of an existing Answer</param> 
-		/// <returns>the Answer with the given {id}</returns> 
-		[HttpGet("{id}")]
+        #region RESTful conventions methods 
+        /// <summary> 
+        /// Retrieves the Answer with the given {id} 
+        /// </summary> 
+        /// &lt;param name="id">The ID of an existing Answer</param> 
+        /// <returns>the Answer with the given {id}</returns> 
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
 			var answer = DbContext.Answers.Where(w => w.Id == id).FirstOrDefault();

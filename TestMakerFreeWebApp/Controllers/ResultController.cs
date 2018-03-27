@@ -11,20 +11,26 @@ using TestMakerFreeWebApp.Data.Models;
 using TestMakerFreeWebApp.Data;
 using Mapster;
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+
 namespace TestMakerFreeWebApp.Controllers
 {
     public class ResultController : BaseApiController
     {
 		#region Constructor
-		public ResultController(ApplicationDbContext context) : base(context) { }
-		#endregion	
-		#region RESTful conventions methods 
-		/// <summary> 
-		/// Retrieves the Result with the given {id} 
-		/// </summary> 
-		/// &lt;param name="id">The ID of an existing Result</param> 
-		/// <returns>the Result with the given {id}</returns> 
-		[HttpGet("{id}")]
+		public ResultController(ApplicationDbContext context,
+                                        RoleManager<IdentityRole> roleManager,
+                                        UserManager<ApplicationUser> userManager,
+                                        IConfiguration configuration) : base(context, roleManager, userManager, configuration) { }
+        #endregion
+        #region RESTful conventions methods 
+        /// <summary> 
+        /// Retrieves the Result with the given {id} 
+        /// </summary> 
+        /// &lt;param name="id">The ID of an existing Result</param> 
+        /// <returns>the Result with the given {id}</returns> 
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
 			var result = DbContext.Results.Where(w => w.Id == id).FirstOrDefault();

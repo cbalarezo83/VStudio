@@ -24,6 +24,8 @@ import { ResultListComponent } from './components/result/result-list.component';
 import { ResultEditComponent } from './components/result/result-edit.component';
 
 import { AboutComponent } from './components/about/about.component';
+
+import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.component';
 
@@ -80,6 +82,9 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
             { path: 'about', component: AboutComponent },
             { path: '**', component : PageNotFoundComponent }
         ])
+    ],
+    providers: [
+        AuthService
     ]
 })
 export class AppModuleShared {

@@ -56,6 +56,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\assets\images\logo.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\about\about.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\answer\answer-list.component.html" />
     <TypeScriptCompile Include="ClientApp\app\components\answer\answer-list.component.ts" />

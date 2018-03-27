@@ -5,13 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+
+using Mapster;
 
 using TestMakerFreeWebApp.Data;
 using TestMakerFreeWebApp.Data.Models;
 using TestMakerFreeWebApp.ViewModels;
 
 
-using Mapster;
 
 
 
@@ -23,7 +26,10 @@ namespace TestMakerFreeWebApp.Controllers
 	public class QuizController : BaseApiController
     {
 		#region Constructor
-		public QuizController(ApplicationDbContext context) : base(context) { }
+		public QuizController(ApplicationDbContext context,
+                                RoleManager<IdentityRole> roleManager,
+                                UserManager<ApplicationUser> userManager,
+                                IConfiguration configuration) : base(context,roleManager,userManager,configuration) { }
 		#endregion
 
 

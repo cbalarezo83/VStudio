@@ -7,9 +7,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+
 using TestMakerFreeWebApp.Data;
+using TestMakerFreeWebApp.Data.Models;
 
 namespace TestMakerFreeWebApp
 {
@@ -22,18 +28,61 @@ namespace TestMakerFreeWebApp
 
 		public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddMvc();
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
 
-			//Add Entity Framework Support for SQL Server
-			services.AddEntityFrameworkSqlServer();
+            //Add Entity Framework Support for SQL Server
+            services.AddEntityFrameworkSqlServer();
 
-			//Add ApplicationDBContext
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //Add ApplicationDBContext
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-		}
+            //Add ASP.NET Identity Support
+            services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
+            {
+                opts.Password.RequireDigit = true;
+                opts.Password.RequireLowercase = true;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequiredLength = 7;
+            }).
+            AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //Add Authentication with JWT Tokens
+
+            services.AddAuthentication(opts =>
+            {
+                opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).
+            AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    // standard configuration
+                    ValidIssuer = Configuration["Auth:Jwt:Issuer"],
+                    ValidAudience = Configuration["Auth:Jwt:Audience"],
+                    IssuerSigningKey =
+                    new SymmetricSecurityKey(
+
+                        System.Text.Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Key"])),
+                    ClockSkew = TimeSpan.Zero,
+
+                    // security switches
+                    RequireExpirationTime = true,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = true
+                };
+            });
+
+
+        }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -65,9 +114,10 @@ namespace TestMakerFreeWebApp
 				}
 			);
 
-			
+            // Add the AuthenticationMiddleware to the pipeline
+            app.UseAuthentication();
 
-			app.UseMvc(routes =>
+            app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "default",
@@ -85,9 +135,12 @@ namespace TestMakerFreeWebApp
 			{
 				var dbContext =serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
 
-				dbContext.Database.Migrate();
+                var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+                var userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
 
-				DbSeeder.Seed(dbContext);
+                dbContext.Database.Migrate();
+
+				DbSeeder.Seed(dbContext,roleManager,userManager);
 			}
 		}
 	}
