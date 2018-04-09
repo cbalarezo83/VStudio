@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule , ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { AppComponent } from './components/app/app.component';
-import { QuizSearchComponent } from './components/quiz/quiz-search.component';
+import { AuthService } from './services/auth.service';
+import { AuthInterceptor } from './services/auth.interceptor';
 
+import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
+
+import { QuizSearchComponent } from './components/quiz/quiz-search.component';
+
 
 import { QuizComponent } from './components/quiz/quiz.component';
 import { QuizListComponent } from './components/quiz/quiz-list.component';
@@ -24,8 +28,6 @@ import { ResultListComponent } from './components/result/result-list.component';
 import { ResultEditComponent } from './components/result/result-edit.component';
 
 import { AboutComponent } from './components/about/about.component';
-
-import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.component';
 
@@ -84,7 +86,12 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
         ])
     ],
     providers: [
-        AuthService
+        AuthService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        }
     ]
 })
 export class AppModuleShared {

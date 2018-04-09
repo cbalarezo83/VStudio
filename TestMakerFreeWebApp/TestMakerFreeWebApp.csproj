@@ -53,6 +53,7 @@
     <None Remove="ClientApp\app\interfaces\question.ts" />
     <None Remove="ClientApp\app\interfaces\quiz.ts" />
     <None Remove="ClientApp\app\interfaces\result.ts" />
+    <None Remove="ClientApp\app\interfaces\token.response.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,6 +80,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\result\result-list.component.less" />
     <TypeScriptCompile Include="ClientApp\app\components\result\result-list.component.html" />
     <TypeScriptCompile Include="ClientApp\app\components\result\result-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\interfaces\token.response.ts" />
     <TypeScriptCompile Include="ClientApp\app\interfaces\result.ts" />
     <TypeScriptCompile Include="ClientApp\app\interfaces\answer.ts" />
     <TypeScriptCompile Include="ClientApp\app\interfaces\question.ts" />

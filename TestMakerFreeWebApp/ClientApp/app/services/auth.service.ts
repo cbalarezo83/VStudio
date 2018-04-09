@@ -16,7 +16,8 @@ export class AuthService {
 
     // performs the login
     login(username: string, password: string): Observable<boolean> {
-        var url = "api/auth/jwt";
+
+        var url = "api/token/auth";
 
         var data = {
             username: username,
@@ -28,8 +29,9 @@ export class AuthService {
             scope: "offline_access profile email"
         };
 
+
         return this.http.post<TokenResponse>(url, data).
-            map((res) => {
+            map(res => {
 
                 let token = res && res.token;
 
@@ -37,14 +39,23 @@ export class AuthService {
                     // store username and jwt token
                     this.setAuth(res);
                     // successful login
-                    return true;
+                    return Observable.of(true);
+                } else {
+                    // failed login
+                    return Observable.throw('Unauthorized');
                 }
 
-                // failed login
-                return Observable.throw('Unauthorized');
-            }).catch(error => {
-                return new Observable<any>(error);
+            }).
+            catch(error => {
+                return Observable.throw(error);
             });
+
+
+//.
+//            catch (error => {
+//            c
+//        })
+
     }
 
     logout(): boolean {

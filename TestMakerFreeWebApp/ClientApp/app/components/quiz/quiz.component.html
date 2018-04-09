@@ -45,7 +45,7 @@
                 <a [routerLink]="['/home']" class="btn btn-default">
                     <span class="glyphicon glyphicon-backward"></span>&nbsp;Back
                 </a>
-                <div class="edit">
+                <div *ngIf="auth.isLoggedIn()" class="edit">
                     <input type="button" value="Edit" (click)="onEdit()" class="btn btn-sm btn-warning" />
                     <input type="button" value="Delete" (click)="onDelete()" class="btn btn-sm btn-danger" />
                 </div>

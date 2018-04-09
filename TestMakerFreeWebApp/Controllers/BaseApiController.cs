@@ -33,7 +33,7 @@ namespace TestMakerFreeWebApp.Controllers
 		{
 			DbContext = context;
             RoleManager = roleManager;
-            UserManager = UserManager;
+            UserManager = userManager;
             Configuration = configuration;
 			JsonSettings = new JsonSerializerSettings() { Formatting = Formatting.Indented };
 		}
