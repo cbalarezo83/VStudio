@@ -11,6 +11,8 @@ using Mapster;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -49,6 +51,7 @@ namespace TestMakerFreeWebApp.Controllers
 		/// </summary> 
 		/// <param name="m">The AnswerViewModel containing the data to insert</param> 
 		[HttpPut]
+        [Authorize]
 		public IActionResult Put([FromBody]AnswerViewModel model)
         {
 			if (model == null) return new StatusCodeResult(500);
@@ -74,6 +77,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="m">The AnswerViewModel containing the data to update</param> 
         [HttpPost]
+        [Authorize]
         public IActionResult Post([FromBody] AnswerViewModel model)
         {
 			if (model == null) return new StatusCodeResult(500);
@@ -101,6 +105,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="id">The ID of an existing Answer</param> 
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
 			var answer = DbContext.Answers.Where(w => w.Id == id).FirstOrDefault();

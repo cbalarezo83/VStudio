@@ -65,18 +65,17 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
             { path: 'home', component: HomeComponent },
             { path: 'login', component: LoginComponent },
 
-            { path: 'quiz/:id', component: QuizComponent },
             { path: 'quiz/create', component: QuizEditComponent },
             { path: 'quiz/edit/:id', component: QuizEditComponent },
-
-
-            { path: 'question/:id', component: QuestionListComponent },
+            { path: 'quiz/:id', component: QuizComponent },
+            
             { path: 'question/create/:id', component: QuestionEditComponent },
             { path: 'question/edit/:id', component: QuestionEditComponent },
+            { path: 'question/:id', component: QuestionListComponent },
 
-            { path: 'answer/:id', component: AnswerListComponent },
             { path: 'answer/create/:id', component: AnswerEditComponent },
             { path: 'answer/edit/:id', component: AnswerEditComponent },
+            { path: 'answer/:id', component: AnswerListComponent },
 
             { path: 'result/create/:id', component: ResultEditComponent },
             { path: 'result/edit/:id', component: ResultEditComponent  },

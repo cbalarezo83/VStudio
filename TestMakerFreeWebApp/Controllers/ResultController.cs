@@ -13,6 +13,7 @@ using Mapster;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestMakerFreeWebApp.Controllers
 {
@@ -46,6 +47,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="m">The ResultViewModel containing the data to insert</param> 
         [HttpPut]
+        [Authorize]
         public IActionResult Put([FromBody]ResultViewModel model)
         {
 			if (model == null) return new StatusCodeResult(500);
@@ -68,6 +70,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="m">The ResultViewModel containing the data to update</param> 
         [HttpPost]
+        [Authorize]
         public IActionResult Post([FromBody] ResultViewModel model)
         {
 			if (model == null) return new StatusCodeResult(500);
@@ -95,6 +98,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="id">The ID of an existing Result</param> 
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
 			var result = DbContext.Results.Where(w => w.Id == id).FirstOrDefault();

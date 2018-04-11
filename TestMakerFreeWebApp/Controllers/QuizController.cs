@@ -13,9 +13,9 @@ using Mapster;
 using TestMakerFreeWebApp.Data;
 using TestMakerFreeWebApp.Data.Models;
 using TestMakerFreeWebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
-
-
+using System.Security.Claims;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -72,6 +72,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="m">The QuizViewModel containing the data to insert</param> 
         [HttpPut]
+        [Authorize]
         public IActionResult Put([FromBody]QuizViewModel model)
         {
 			if (model == null) return new StatusCodeResult(500);
@@ -86,7 +87,9 @@ namespace TestMakerFreeWebApp.Controllers
 				LastModifiedDate= DateTime.Now 
 			};
 
-			quiz.UserId = DbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
+            //dummy until we retrieve the actual user
+            //quiz.UserId = DbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
+            quiz.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 			DbContext.Quizzes.Add(quiz);
 			DbContext.SaveChanges();
@@ -99,6 +102,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="m">The QuizViewModel containing the data to update</param> 
         [HttpPost]
+        [Authorize]
         public IActionResult Post([FromBody]QuizViewModel model)
         {
 			if (model == null) return new StatusCodeResult(500);
@@ -128,6 +132,7 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary> 
         /// <param name="id">The ID of an existing Quiz</param> 
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
 			var quiz = DbContext.Quizzes.Where(w => w.Id == id).FirstOrDefault();
