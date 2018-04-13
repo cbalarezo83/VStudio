@@ -22,6 +22,8 @@ namespace TestMakerFreeWebApp.Data
 
             modelbuilder.Entity<ApplicationUser>().ToTable("Users");
             modelbuilder.Entity<ApplicationUser>().HasMany(u => u.Quizzes).WithOne(i => i.User);
+            modelbuilder.Entity<ApplicationUser>().HasMany(u => u.Tokens).WithOne(i => i.User);
+
 
             modelbuilder.Entity<Quiz>().ToTable("Quizzes");
             modelbuilder.Entity<Quiz>().Property(i => i.Id).ValueGeneratedOnAdd();
@@ -41,8 +43,9 @@ namespace TestMakerFreeWebApp.Data
             modelbuilder.Entity<Result>().Property(i => i.Id).ValueGeneratedOnAdd();
             modelbuilder.Entity<Result>().HasOne(o => o.Quiz).WithMany(m => m.Results);
 
-
-
+            modelbuilder.Entity<Token>().ToTable("Tokens");
+            modelbuilder.Entity<Token>().Property(i => i.Id).ValueGeneratedOnAdd();
+            modelbuilder.Entity<Token>().HasOne(i => i.User).WithMany(u=> u.Tokens);
 
         }
         #endregion  
@@ -53,6 +56,7 @@ namespace TestMakerFreeWebApp.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Result> Results { get; set; }
+        public DbSet<Token> Tokens { get; set; }
         #endregion Properties
     }
 }

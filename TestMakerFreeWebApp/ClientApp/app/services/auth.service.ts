@@ -30,32 +30,67 @@ export class AuthService {
         };
 
 
+        //return this.http.post<TokenResponse>(url, data).
+        //    map(res => {
+
+        //        let token = res && res.token;
+
+        //        if (token) {
+        //            // store username and jwt token
+        //            this.setAuth(res);
+        //            // successful login
+        //            return Observable.of(true);
+        //        } else {
+        //            // failed login
+        //            return Observable.throw('Unauthorized');
+        //        }
+
+        //    }).
+        //    catch(error => {
+        //        return Observable.throw(error);
+        //    });
+
+        return this.getAuthFromServer(url, data);
+
+    }
+
+    refreshToken(): Observable<boolean> {
+        var url = "/api/token/auth";
+
+        var data = {
+            client_id: this.clientId,
+            // required when signing up with username/password
+            grant_type: "refresh_token",
+            refresh_token: this.getAuth()!.refresh_token,
+            // space-separated list of scopes for which the token is issued
+            scope: "offline_access profile email"
+        };
+
+        return this.getAuthFromServer(url, data);
+
+    }
+
+    getAuthFromServer(url: string, data: any): Observable<boolean> {
+
         return this.http.post<TokenResponse>(url, data).
             map(res => {
 
                 let token = res && res.token;
 
                 if (token) {
-                    // store username and jwt token
+                     // store username and jwt token
                     this.setAuth(res);
-                    // successful login
-                    return Observable.of(true);
-                } else {
-                    // failed login
-                    return Observable.throw('Unauthorized');
+                    return true;
                 }
-
+                else {
+                    // failed login
+                    return false;
+                }
             }).
             catch(error => {
-                return Observable.throw(error);
+                return new Observable<any>(error);
             });
-
-
-//.
-//            catch (error => {
-//            c
-//        })
-
+                
     }
 
     logout(): boolean {
